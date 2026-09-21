@@ -51,6 +51,12 @@
     "access": "public"
   },
   "dsh": {
+    "compatibility": {
+      "node": ">=20",
+      "dshReleases": {
+        "0.1.5-rc.2": "compatible"
+      }
+    },
     "bundle": {
       "patch": "./cordis.patch.yml"
     }

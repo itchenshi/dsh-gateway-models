@@ -84,6 +84,27 @@ dsh plugin --profile web add dsh-opencode-go-path
 > 包名里的 `-path` 后缀是**必需的**：`dsh-opencode-go` 与 `dsh-opencode-go-plus`
 > 在 npm 上都已被其他作者占用。后缀只影响安装时写的包名，与功能无关。
 
+## 权限、依赖与失败边界
+
+会把仓库固定到某个 commit 再审查的商城（DSH STORE 之类）会对运行时代码做静态扫描，
+并按检测到的信号给出权限结论。这里把事实一次写清，免得被推断：
+
+- **运行依赖：无。** 只用 Node 内建模块（`node:async_hooks`、`node:crypto`、
+  `node:fs/promises`、`node:path`、`node:timers/promises`）。
+- **出站网络：无。** 本插件**不发起任何请求**。它包装 `globalThis.fetch`，给发往
+  OpenCode 路由的请求附加 `x-opencode-session` 头（修复 400 MissingSessionID）。
+  「网络信号」来自这个包装行为，而不是它自己去连谁。
+- **文件：默认没有。** 唯一会写文件的情况是你在补丁层的行 config 里**显式配置了
+  `debugFile`** —— 那时它按行向该路径追加 JSON 调试日志，并且只接受
+  `$DSH_HOME/logs` 或系统临时目录下的路径，其它路径直接忽略。日志里的会话标识是
+  单向 SHA-256，不是原始会话 ID。
+- **本机路由：无。** 这个插件没有页面半边，不注册任何 HTTP 路由。
+- **凭据 / 命令 / 原生制品 / 生命周期脚本：无。**
+- **模型自动补齐是幂等的**：路由不存在时什么都不做；存在且已有所需模型时也不写。
+- **失败边界**：插件依赖的是引擎装配层与 settings 服务的公开契约，不是引擎版本号。
+  契约若变，引擎会在启动时**显式报出插件加载失败**，而不是静默失效；补丁层的行 id
+  是 `opencode-go`，卸载后 `settings.yaml` 里自动补的模型条目会留下，可手动删。
+
 ## 从旧插件升级
 
 原 `dsh-opencode-go-session` 与 `dsh-opencode-go-api` 已合并进本插件；v0.5.0 起
