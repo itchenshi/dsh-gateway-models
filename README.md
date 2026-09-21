@@ -70,7 +70,7 @@ dsh plugin --profile web add dsh-opencode-go-path
 ```
 
 装完**重启 `dsh web`**（或重开 DSH GUI）。在 DSH GUI 里也可以在
-「设置窗口 → 第三方插件」里勾选安装同一个包。
+「设置窗口 → 第三方插件」里勾选安装同一个包（显示为 **OpenCode Go 路由**）。
 
 验证：
 
