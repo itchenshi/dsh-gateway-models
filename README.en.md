@@ -3,6 +3,10 @@
 [![English](https://img.shields.io/badge/README-English-green)](README.en.md)
 [![中文](https://img.shields.io/badge/README-中文-blue)](README.md)
 
+> One of the plugins bundled with **DSH Ready GUI** — the GUI ships all four, ready to tick.
+> Each one also installs standalone into any DSH host (see "Install and go" below).
+> GUI: https://github.com/itchenshi/dsh-ready-gui
+
 One plugin for the OpenCode / OpenCode Go routes: **install it, tick it, done** — no hand-editing
 config, no command line.
 
@@ -20,15 +24,18 @@ config, no command line.
 
 - **Using DSH Ready GUI (recommended)**: the plugin **ships inside the GUI**. Open the GUI → Settings
   → Third-party plugins → tick **OpenCode Go routes**, then restart the engine as prompted.
-- **Any other DSH host** (`dsh web`, the CLI):
+- **Any other DSH host** (`dsh web`, the CLI) — either route works:
 
   ```sh
-  git clone https://github.com/itchenshi/dsh-opencode-go-path.git
-  dsh plugin --profile web add file:<absolute path of the clone>
+  # Recommended: install straight from GitHub (recorded in your profile, updatable)
+  dsh plugin --profile web add github:itchenshi/dsh-opencode-go-path
+
+  # Fallback: install the release tarball (use this if github.com is unreachable for you)
+  dsh plugin --profile web add https://github.com/itchenshi/dsh-opencode-go-path/releases/download/v0.1.4/dsh-opencode-go-path-0.1.4.tar.gz
   ```
 
-  That installs the real on-disk directory, so a later `git pull` updates the very code in use — but
-  moving or deleting the directory breaks the dependency (just add it again).
+  Both land the full repository contents (including `cordis.patch.yml`); no extra configuration
+  is needed afterwards.
 
 > Not on npm yet: sign-up is unreachable (`www.npmjs.com` answers with a Cloudflare challenge), so
 > nothing can be published. Use one of the two routes above; publishing resumes once sign-up works.
